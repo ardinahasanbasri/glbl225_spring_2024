@@ -32,12 +32,18 @@
 
 #install.packages("haven") # Only need to install once. 
 #install.packages("dplyr") 
+#install.packages("here") 
 
 library(haven) # Needed for the read_dta() command. 
 library(dplyr) # Needed for lag() command. 
+library(here)  # Needed for here()
 
 # setwd (set working directory) is a function that tells r what path should R look at 
-setwd("C:/Users/ardin/OneDrive/GLBL 225 Spring 2024/Lecture Slides/2 The Macro Approach/Macro Approach Lecture Codes") 
+
+here()        # This shows the path the project folder is at. 
+setwd(here()) # This will set the directory to the project folder. 
+              # It is already set there from the start. 
+              # I show it here just in case you want to set your directory manually. 
 
 # Upload data
 data  <- read_dta("lec3_modified_pwt1001.dta")
