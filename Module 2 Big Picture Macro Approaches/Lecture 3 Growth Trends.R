@@ -12,7 +12,7 @@
 #       contributed the most to the country's growth from year 1960 to 2000. 
 #
 # Additional question to reflect on: 
-#       Can growth be achieved in different ways?
+#       Can we achieve high growth in different ways?
 # 
 # Coding skills that students should grasp:
 #       1) Basics of setting up a directory 
@@ -31,11 +31,11 @@
 # Packages needed for this lesson. 
 
 #install.packages("haven") # Only need to install once. 
-#install.packages("dplyr") 
+#install.packages("quest") 
 #install.packages("here") 
 
 library(haven) # Needed for the read_dta() command. 
-library(dplyr) # Needed for lag() command. 
+library(quest) # Needed for shift_by() command. 
 library(here)  # Needed for here()
 
 # setwd (set working directory) is a function that tells r what path should R look at 
@@ -46,6 +46,7 @@ setwd(here()) # This will set the directory to the project folder.
               # I show it here just in case you want to set your directory manually. 
 
 # Upload data
+
 data  <- read_dta("lec3_modified_pwt1001.dta")
 data  <- data.frame(data)        # Make sure that the data is a dataframe object
 
@@ -66,16 +67,16 @@ unique(data$country)
 # The row is the first argument inside [,], column is second argument. 
 
 data[data$country=="Republic of Korea",  ]
-View(data[data$country=="Republic of Korea", ])
+#View(data[data$country=="Republic of Korea", ])
 
-View(data[data$country=="Republic of Korea", c("country", "year", "cn") ])
+#View(data[data$country=="Republic of Korea", c("country", "year", "cn") ])
 
 
 ###                                                                ###
 # 3) Continue dataframe basics, creating a new variable            ###
 ###                                                                ###
 
-# Remember the goal: We want to understand which component lead the high growth 
+# Remember the goal: We want to understand which component explains the high growth 
 #                    for the Republic of Korea from 1980 to 2000. 
 
 # Our production function is y = A k^alpha. 
@@ -93,14 +94,22 @@ data$lA <- data$ly - 0.3*data$lk
 
 # STEP 3.2 Calculate growth rates  
 
-data$growth_lA <- (data$lA - lag(data$lA, order_by=data$country))
-data$growth_lk <- (data$lk - lag(data$lk, order_by=data$country))
-data$growth_ly <- (data$ly - lag(data$ly, order_by=data$country))
+# To get the lag of a variable, we will use the command shift_by() from quest package
+# Example:
+
+shift_by(data$ly)
+
+shift_by(data$ly, n=-1, grp = data$country )
+
+# Creating the growth rates
+data$growth_lA <- (data$lA - shift_by(data$lA, n=-1, grp = data$country ))
+data$growth_lk <- (data$lk - shift_by(data$lk, n=-1, grp = data$country ))
+data$growth_ly <- (data$ly - shift_by(data$ly, n=-1, grp = data$country ))
 
 # The variable below is used just to check if the sum make sense from our model
 data$growth_ly_check = data$growth_lA + 0.3*data$growth_lk
 
-# View(data[, c("country", "year", "growth_ly", "growth_ly_check")])
+#View(data[, c("country", "year", "ly", "growth_ly", "growth_ly_check")])
 
 
 
@@ -114,3 +123,5 @@ data$check_sum_to_one <- data$A_contribution + data$k_contribution
 data$growth_lk03 <- 0.3*data$growth_lk
 
 # View(data[, c("country", "year", "growth_ly", "growth_lk03", "growth_lA", "A_contribution", "k_contribution")])
+
+# Can you answer the original question for South Korea? 
