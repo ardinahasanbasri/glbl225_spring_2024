@@ -97,7 +97,7 @@ data$lA <- data$ly - 0.3*data$lk
 # To get the lag of a variable, we will use the command shift_by() from quest package
 # Example:
 
-shift_by(data$ly)
+# shift_by(data$ly) # This will give an error. 
 
 shift_by(data$ly, n=-1, grp = data$country )
 
