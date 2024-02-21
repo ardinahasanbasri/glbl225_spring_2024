@@ -26,7 +26,7 @@ Data <- data.frame("person_id" = c(1,2,3,4,5,6,7,8,9,10),
                    "Yi_1"= c(7,5,5,7,4,10,1,5,3,9), 
                    "Yi_0"  = c(1,6,1,8,2,1,10,6,7,8))
 
-# Creating individual treatment effect of the blue pill.  
+# Creating individual treatment effect of training.  
 Data$alpha_i <- Data$Yi_1 - Data$Yi_0 
 
 #----------
