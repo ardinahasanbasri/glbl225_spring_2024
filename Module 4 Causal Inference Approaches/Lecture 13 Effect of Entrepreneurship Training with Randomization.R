@@ -147,8 +147,6 @@ print(mean_sdo_experiment)
 
 mean(Group_D1_all$Yi_1) - mean(Group_D2_all$Yi_0) # Same as above.
 
-mean(Group_random[Group_random$D_i==1,]$Y_i) - mean(Group_random[Group_random$D_i==0,]$Y_i)
-
 # The random experiment done multiple times give a closer number to ATE. 
 
 #--------------------------------
@@ -167,5 +165,7 @@ Group_D1_all$D_i <- 1
 Group_D2_all$D_i <- 0
 
 Group_random <-rbind(Group_D1_all,Group_D2_all)
+
+mean(Group_random[Group_random$D_i==1,]$Y_i) - mean(Group_random[Group_random$D_i==0,]$Y_i)
 
 lm(Y_i~D_i, data=Group_random) # This one uses the randomization data.  
